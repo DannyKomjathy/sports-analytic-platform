@@ -1,0 +1,41 @@
+services:
+  # API Service
+  - type: web
+    name: sports-analytics-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.production.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ODDS_API_KEY
+        sync: false  # You'll set this manually
+      - key: CORS_ORIGIN
+        fromService:
+          type: web
+          name: sports-analytics-frontend
+          property: host
+      - key: CACHE_TTL_SECONDS
+        value: 300
+      - key: ENABLE_CACHE
+        value: true
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 50
+      - key: ENABLE_HELMET
+        value: true
+
+  # Frontend Service
+  - type: web
+    name: sports-analytics-frontend
+    env: static
+    buildCommand: cd react-dynamic && npm install && npm run build
+    staticPublishPath: react-dynamic/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: sports-analytics-api
+          property: host
+      - key: VITE_PUBLIC_MESSAGE
+        value: Production Mode - Sports Analytics
