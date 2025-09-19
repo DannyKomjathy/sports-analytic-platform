@@ -232,15 +232,8 @@ app.use('/api', (req, res) => {
     });
 });
 
-// Static hosting for built React app
-const distPath = path.join(__dirname, 'react-dynamic-minimal', 'dist');
-app.use(express.static(distPath));
-
-// SPA fallback
-app.get(/^(?!\/api).*/, (req, res) => {
-    console.log(`[${req.requestId}] SPA fallback for: ${req.originalUrl}`);
-    res.sendFile(path.join(distPath, 'index.html'));
-});
+// API service only - no frontend serving
+// Frontend is served by separate Static Site service
 
 // Error handling middleware
 app.use((error, req, res, next) => {
@@ -270,4 +263,5 @@ app.listen(PORT, () => {
     console.log(`💾 Caching: ${config.enableCache ? 'enabled' : 'disabled'}`);
     console.log(`🔒 Security: ${config.enableHelmet ? 'enabled' : 'disabled'}`);
 });
+
 
