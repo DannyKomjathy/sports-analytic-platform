@@ -233,7 +233,7 @@ app.use('/api', (req, res) => {
 });
 
 // Static hosting for built React app
-const distPath = path.join(__dirname, 'react-dynamic', 'dist');
+const distPath = path.join(__dirname, 'react-dynamic-minimal', 'dist');
 app.use(express.static(distPath));
 
 // SPA fallback
@@ -270,3 +270,4 @@ app.listen(PORT, () => {
     console.log(`💾 Caching: ${config.enableCache ? 'enabled' : 'disabled'}`);
     console.log(`🔒 Security: ${config.enableHelmet ? 'enabled' : 'disabled'}`);
 });
+
